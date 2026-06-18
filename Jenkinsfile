@@ -2,11 +2,11 @@ pipeline {
     agent any
 
     parameters {
-        string(name: 'THREADS', defaultValue: '10')
+        string(name: 'THREADS', defaultValue: '1')
         string(name: 'RAMPUP', defaultValue: '30')
-        string(name: 'DURATION', defaultValue: '300')
-        string(name: 'URL', defaultValue: 'http://localhost:3000')
-        string(name: 'THROUGHPUT', defaultValue: '100')
+        string(name: 'DURATION', defaultValue: '60')
+        string(name: 'URL', defaultValue: 'http://5.42.97.48:8080')
+        string(name: 'THROUGHPUT', defaultValue: '1')
         string(name: 'TEST_PLAN', defaultValue: 'Test_Plan1somnenie.jmx')
     }
 
@@ -76,29 +76,50 @@ pipeline {
                 }
             }
         }
-
-        stage('Download results') {
-            steps {
-                withCredentials([
-                    sshUserPrivateKey(
-                        credentialsId: 'host-ssh-key',
-                        keyFileVariable: 'SSH_KEY'
-                    )
-                ]) {
-                    sh '''
-                        mkdir -p results
-                        scp -i ${SSH_KEY} \
-                            -o StrictHostKeyChecking=no \
-                            -r ${SSH_HOST}:${REMOTE_DIR}/results/* \
-                            results/
-                    '''
-                }
-            }
-        }
     }
 
     post {
+        aborted {
+            withCredentials([
+                sshUserPrivateKey(
+                    credentialsId: 'host-ssh-key',
+                    keyFileVariable: 'SSH_KEY'
+                )
+            ]) {
+                sh '''
+                    ssh -i ${SSH_KEY} -o StrictHostKeyChecking=no ${SSH_HOST} "
+                        if [ -f ${REMOTE_DIR}/run_jmeter.pid ]; then
+                            PID=\\$(cat ${REMOTE_DIR}/run_jmeter.pid)
+
+                            kill -TERM -- -\\${PID} 2>/dev/null || true
+                            sleep 5
+
+                            if kill -0 \\${PID} 2>/dev/null; then
+                                kill -KILL -- -\\${PID} 2>/dev/null || true
+                            fi
+                        fi
+                    " || true
+                '''
+            }
+        }
+
         always {
+            withCredentials([
+                sshUserPrivateKey(
+                    credentialsId: 'host-ssh-key',
+                    keyFileVariable: 'SSH_KEY'
+                )
+            ]) {
+                sh '''
+                    mkdir -p results
+
+                    scp -i ${SSH_KEY} \
+                        -o StrictHostKeyChecking=no \
+                        -r ${SSH_HOST}:${REMOTE_DIR}/results/* \
+                        results/ || true
+                '''
+            }
+
             archiveArtifacts(
                 artifacts: 'results/**/*',
                 allowEmptyArchive: true
