@@ -79,51 +79,32 @@ pipeline {
     }
 
     post {
-        aborted {
-            withCredentials([
-                sshUserPrivateKey(
-                    credentialsId: 'host-ssh-key',
-                    keyFileVariable: 'SSH_KEY'
-                )
-            ]) {
-                sh '''
-                    ssh -i ${SSH_KEY} -o StrictHostKeyChecking=no ${SSH_HOST} "
-                        if [ -f ${REMOTE_DIR}/run_jmeter.pid ]; then
-                            PID=\\$(cat ${REMOTE_DIR}/run_jmeter.pid)
-
-                            kill -TERM -- -\\${PID} 2>/dev/null || true
-                            sleep 5
-
-                            if kill -0 \\${PID} 2>/dev/null; then
-                                kill -KILL -- -\\${PID} 2>/dev/null || true
-                            fi
-                        fi
-                    " || true
-                '''
-            }
-        }
-
-        always {
-            withCredentials([
-                sshUserPrivateKey(
-                    credentialsId: 'host-ssh-key',
-                    keyFileVariable: 'SSH_KEY'
-                )
-            ]) {
-                sh '''
-                    mkdir -p results
-
-                    scp -i ${SSH_KEY} \
-                        -o StrictHostKeyChecking=no \
-                        -r ${SSH_HOST}:${REMOTE_DIR}/results/* \
-                        results/ || true
-                '''
-            }
-
-            archiveArtifacts(
-                artifacts: 'results/**/*',
-                allowEmptyArchive: true
+    always {
+        withCredentials([
+            sshUserPrivateKey(
+                credentialsId: 'host-ssh-key',
+                keyFileVariable: 'SSH_KEY'
             )
+        ]) {
+            sh '''
+                ssh -i ${SSH_KEY} -o StrictHostKeyChecking=no ${SSH_HOST} "
+                    pkill -TERM -f '[j]meter-runs/build-${BUILD_NUMBER}' || true
+                    sleep 5
+                    pkill -KILL -f '[j]meter-runs/build-${BUILD_NUMBER}' || true
+                " || true
+
+                mkdir -p results
+
+                scp -i ${SSH_KEY} \
+                    -o StrictHostKeyChecking=no \
+                    -r ${SSH_HOST}:${REMOTE_DIR}/results/* \
+                    results/ || true
+            '''
         }
+
+        archiveArtifacts(
+            artifacts: 'results/**/*',
+            allowEmptyArchive: true
+        )
     }
 }
