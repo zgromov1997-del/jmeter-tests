@@ -7,7 +7,7 @@ DURATION=${4:-300}
 RAW_URL=${5:-http://localhost}
 THROUGHPUT=${6:-1}
 WORK_DIR=$(pwd)
-PID_FILE="${WORK_DIR}/run_jmeter.pgid"
+PID_FILE="${WORK_DIR}/run_jmeter.pid"
 if [[ "${RAW_URL}" == *"://"* ]]; then
 PROTOCOL="${RAW_URL%%://*}"
 HOST_PORT_PATH="${RAW_URL#*://}"
@@ -23,7 +23,7 @@ PORT="${HOST_PORT#*:}"
 fi
 rm -rf results/*
 mkdir -p results
-setsid jmeter -n \
+setsid /home/egromov/apache-jmeter-5.6.3/bin/jmeter -n \
 -t "${WORK_DIR}/test-plans/${TEST_PLAN}" \
 -q "${WORK_DIR}/properties/test.properties" \
 -Jthreads="${THREADS}" \
