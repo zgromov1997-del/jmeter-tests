@@ -5,8 +5,6 @@
       <elementProp name="TestPlan.user_defined_variables" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables">
         <collectionProp name="Arguments.arguments"/>
       </elementProp>
-      <boolProp name="TestPlan.functional_mode">false</boolProp>
-      <boolProp name="TestPlan.serialize_threadgroups">false</boolProp>
     </TestPlan>
     <hashTree>
       <JSR223PreProcessor guiclass="TestBeanGUI" testclass="JSR223PreProcessor" testname="INFO" enabled="false">
@@ -34,7 +32,7 @@ Example script.
         </elementProp>
       </ThreadGroup>
       <hashTree>
-        <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="[MAIN] Parameters" enabled="true">
+        <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="[MAIN] Parameters">
           <collectionProp name="Arguments.arguments">
             <elementProp name="protocol" elementType="Argument">
               <stringProp name="Argument.name">protocol</stringProp>
@@ -58,11 +56,11 @@ Example script.
           </collectionProp>
         </Arguments>
         <hashTree/>
-        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="pacing" enabled="true"/>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="pacing"/>
         <hashTree>
-          <OnceOnlyController guiclass="OnceOnlyControllerGui" testclass="OnceOnlyController" testname="threadPause" enabled="true"/>
+          <OnceOnlyController guiclass="OnceOnlyControllerGui" testclass="OnceOnlyController" testname="threadPause"/>
           <hashTree>
-            <JSR223PreProcessor guiclass="TestBeanGUI" testclass="JSR223PreProcessor" testname="throughput" enabled="true">
+            <JSR223PreProcessor guiclass="TestBeanGUI" testclass="JSR223PreProcessor" testname="throughput">
               <stringProp name="scriptLanguage">groovy</stringProp>
               <stringProp name="parameters"></stringProp>
               <stringProp name="filename"></stringProp>
@@ -73,7 +71,7 @@ vars.put(&quot;throughput&quot;, throughput.toString())
 </stringProp>
             </JSR223PreProcessor>
             <hashTree/>
-            <TestAction guiclass="TestActionGui" testclass="TestAction" testname="threadPause" enabled="true">
+            <TestAction guiclass="TestActionGui" testclass="TestAction" testname="threadPause">
               <intProp name="ActionProcessor.action">1</intProp>
               <intProp name="ActionProcessor.target">0</intProp>
               <stringProp name="ActionProcessor.duration">0</stringProp>
@@ -86,20 +84,20 @@ vars.put(&quot;throughput&quot;, throughput.toString())
               <hashTree/>
             </hashTree>
           </hashTree>
-          <TestAction guiclass="TestActionGui" testclass="TestAction" testname="pacing" enabled="true">
+          <TestAction guiclass="TestActionGui" testclass="TestAction" testname="pacing">
             <intProp name="ActionProcessor.action">1</intProp>
             <intProp name="ActionProcessor.target">0</intProp>
             <stringProp name="ActionProcessor.duration">0</stringProp>
           </TestAction>
           <hashTree>
-            <ConstantThroughputTimer guiclass="TestBeanGUI" testclass="ConstantThroughputTimer" testname="pacing" enabled="true">
+            <ConstantThroughputTimer guiclass="TestBeanGUI" testclass="ConstantThroughputTimer" testname="pacing">
               <intProp name="calcMode">0</intProp>
-              <stringProp name="throughput">${throughput}</stringProp>
+              <stringProp name="throughput">${__P(throughput,100)}</stringProp>
             </ConstantThroughputTimer>
             <hashTree/>
           </hashTree>
         </hashTree>
-        <ModuleController guiclass="ModuleControllerGui" testclass="ModuleController" testname="[M] main-module" enabled="true">
+        <ModuleController guiclass="ModuleControllerGui" testclass="ModuleController" testname="[M] main-module">
           <collectionProp name="ModuleController.node_path">
             <stringProp name="764597751">Test Plan</stringProp>
             <stringProp name="764597751">Test Plan</stringProp>
@@ -1433,46 +1431,11 @@ vars.put(&quot;throughput&quot;, throughput.toString())
       </hashTree>
       <kg.apc.jmeter.threads.UltimateThreadGroup guiclass="kg.apc.jmeter.threads.UltimateThreadGroupGui" testclass="kg.apc.jmeter.threads.UltimateThreadGroup" testname="jp@gc - Ultimate Thread Group">
         <collectionProp name="ultimatethreadgroupdata">
-          <collectionProp name="1439680898">
-            <stringProp name="49">1</stringProp>
+          <collectionProp name="-325718458">
+            <stringProp name="1536456837">${__P(threads,10)}</stringProp>
             <stringProp name="48">0</stringProp>
-            <stringProp name="48">0</stringProp>
-            <stringProp name="1515111">1800</stringProp>
-            <stringProp name="48">0</stringProp>
-          </collectionProp>
-          <collectionProp name="1959369395">
-            <stringProp name="49">1</stringProp>
-            <stringProp name="50547">300</stringProp>
-            <stringProp name="48">0</stringProp>
-            <stringProp name="1512228">1500</stringProp>
-            <stringProp name="48">0</stringProp>
-          </collectionProp>
-          <collectionProp name="-146253183">
-            <stringProp name="49">1</stringProp>
-            <stringProp name="53430">600</stringProp>
-            <stringProp name="48">0</stringProp>
-            <stringProp name="1509345">1200</stringProp>
-            <stringProp name="48">0</stringProp>
-          </collectionProp>
-          <collectionProp name="-154426496">
-            <stringProp name="49">1</stringProp>
-            <stringProp name="56313">900</stringProp>
-            <stringProp name="48">0</stringProp>
-            <stringProp name="56313">900</stringProp>
-            <stringProp name="48">0</stringProp>
-          </collectionProp>
-          <collectionProp name="-1249123775">
-            <stringProp name="49">1</stringProp>
-            <stringProp name="1509345">1200</stringProp>
-            <stringProp name="48">0</stringProp>
-            <stringProp name="53430">600</stringProp>
-            <stringProp name="48">0</stringProp>
-          </collectionProp>
-          <collectionProp name="-264749453">
-            <stringProp name="49">1</stringProp>
-            <stringProp name="1512228">1500</stringProp>
-            <stringProp name="48">0</stringProp>
-            <stringProp name="50547">300</stringProp>
+            <stringProp name="1657647649">${__P(rampUp,30)}</stringProp>
+            <stringProp name="1976868062">${__P(duration,300)}</stringProp>
             <stringProp name="48">0</stringProp>
           </collectionProp>
         </collectionProp>
@@ -1538,7 +1501,7 @@ vars.put(&quot;throughput&quot;, throughput.toString())
         <hashTree/>
         <OnceOnlyController guiclass="OnceOnlyControllerGui" testclass="OnceOnlyController" testname="Once Only Controller"/>
         <hashTree>
-          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="JSR223 Sampler" enabled="true">
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="JSR223 Sampler">
             <stringProp name="cacheKey">true</stringProp>
             <stringProp name="filename"></stringProp>
             <stringProp name="parameters"></stringProp>
@@ -1689,17 +1652,17 @@ vars.put(&quot;creditCardNumber&quot;, &quot;4432-8015-6152-0454&quot;)</stringP
             <elementProp name="protocol" elementType="Argument">
               <stringProp name="Argument.name">protocol</stringProp>
               <stringProp name="Argument.metadata">=</stringProp>
-              <stringProp name="Argument.value">http</stringProp>
+              <stringProp name="Argument.value">${__P(protocol,http)}</stringProp>
             </elementProp>
             <elementProp name="url" elementType="Argument">
               <stringProp name="Argument.name">url</stringProp>
               <stringProp name="Argument.metadata">=</stringProp>
-              <stringProp name="Argument.value">213.226.127.198</stringProp>
+              <stringProp name="Argument.value">${__P(url,localhost)}</stringProp>
             </elementProp>
             <elementProp name="port" elementType="Argument">
               <stringProp name="Argument.name">port</stringProp>
               <stringProp name="Argument.metadata">=</stringProp>
-              <stringProp name="Argument.value">3000</stringProp>
+              <stringProp name="Argument.value">${__P(port,3000)}</stringProp>
             </elementProp>
             <elementProp name="FeedbacksProb" elementType="Argument">
               <stringProp name="Argument.name">FeedbacksProb</stringProp>
@@ -1744,7 +1707,7 @@ vars.put(&quot;creditCardNumber&quot;, &quot;4432-8015-6152-0454&quot;)</stringP
           </elementProp>
         </HTTPSamplerProxy>
         <hashTree/>
-        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET /api /cart" enabled="true">
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET /api /cart">
           <stringProp name="TestPlan.comments">GET http://5.42.97.48:8080/api/cart?sessionId=${userId}&amp;currencyCode=</stringProp>
           <stringProp name="HTTPSampler.domain">5.42.97.48</stringProp>
           <stringProp name="HTTPSampler.port">8080</stringProp>
@@ -1759,7 +1722,7 @@ vars.put(&quot;creditCardNumber&quot;, &quot;4432-8015-6152-0454&quot;)</stringP
           </elementProp>
         </HTTPSamplerProxy>
         <hashTree/>
-        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET /api /currency" enabled="true">
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET /api /currency">
           <stringProp name="TestPlan.comments">GET http://5.42.97.48:8080/api/currency</stringProp>
           <stringProp name="HTTPSampler.domain">5.42.97.48</stringProp>
           <stringProp name="HTTPSampler.port">8080</stringProp>
@@ -1789,7 +1752,7 @@ vars.put(&quot;creditCardNumber&quot;, &quot;4432-8015-6152-0454&quot;)</stringP
           </elementProp>
         </HTTPSamplerProxy>
         <hashTree>
-          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion">
             <collectionProp name="Asserion.test_strings">
               <stringProp name="3355">id</stringProp>
             </collectionProp>
@@ -1800,7 +1763,7 @@ vars.put(&quot;creditCardNumber&quot;, &quot;4432-8015-6152-0454&quot;)</stringP
           </ResponseAssertion>
           <hashTree/>
         </hashTree>
-        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET /api /cart?{userId}" enabled="true">
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET /api /cart?{userId}">
           <stringProp name="TestPlan.comments">GET http://5.42.97.48:8080/api/cart?sessionId=${userId}&amp;currencyCode=${userCurrency}</stringProp>
           <stringProp name="HTTPSampler.domain">5.42.97.48</stringProp>
           <stringProp name="HTTPSampler.port">8080</stringProp>
