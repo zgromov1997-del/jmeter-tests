@@ -79,32 +79,33 @@ pipeline {
     }
 
     post {
-    always {
-        withCredentials([
-            sshUserPrivateKey(
-                credentialsId: 'host-ssh-key',
-                keyFileVariable: 'SSH_KEY'
+        always {
+            withCredentials([
+                sshUserPrivateKey(
+                    credentialsId: 'host-ssh-key',
+                    keyFileVariable: 'SSH_KEY'
+                )
+            ]) {
+                sh '''
+                    ssh -i ${SSH_KEY} -o StrictHostKeyChecking=no ${SSH_HOST} "
+                        pkill -TERM -f 'ApacheJMeter.jar.*${REMOTE_DIR}' || true
+                        sleep 5
+                        pkill -KILL -f 'ApacheJMeter.jar.*${REMOTE_DIR}' || true
+                    " || true
+
+                    mkdir -p results
+
+                    scp -i ${SSH_KEY} \
+                        -o StrictHostKeyChecking=no \
+                        -r ${SSH_HOST}:${REMOTE_DIR}/results/* \
+                        results/ || true
+                '''
+            }
+
+            archiveArtifacts(
+                artifacts: 'results/**/*',
+                allowEmptyArchive: true
             )
-        ]) {
-            sh '''
-                ssh -i ${SSH_KEY} -o StrictHostKeyChecking=no ${SSH_HOST} "
-                    pkill -TERM -f '[j]meter-runs/build-${BUILD_NUMBER}' || true
-                    sleep 5
-                    pkill -KILL -f '[j]meter-runs/build-${BUILD_NUMBER}' || true
-                " || true
-
-                mkdir -p results
-
-                scp -i ${SSH_KEY} \
-                    -o StrictHostKeyChecking=no \
-                    -r ${SSH_HOST}:${REMOTE_DIR}/results/* \
-                    results/ || true
-            '''
         }
-
-        archiveArtifacts(
-            artifacts: 'results/**/*',
-            allowEmptyArchive: true
-        )
     }
 }
